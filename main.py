@@ -25,8 +25,9 @@ async def read_user_me():
 
 
 @app.get("/users/{user_id}")
-async def read_user(user_id: int):
-    return {"user_id": user_id}
+async def read_user(user_id: int, grumpy: str):
+    item = {"user_id": user_id, "grumpy": grumpy}
+    return item
 
 
 @app.get("/animals/{animal_name}")
