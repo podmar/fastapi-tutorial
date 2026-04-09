@@ -1,12 +1,20 @@
 from enum import Enum
 
 from fastapi import FastAPI
+from pydantic import BaseModel
 
 
 class AnimalName(str, Enum):
     snake = "snake"
     frog = "frog"
     sheep = "sheep"
+
+
+class Item(BaseModel):
+    name: str
+    description: str | None = None
+    price: float
+    tax: float | None = None
 
 
 fake_items_db = [{"item_name": "Foo"}, {"item_name": "Bar"}, {"item_name": "Baz"}]
@@ -59,3 +67,12 @@ async def read_item(item_id: str, q: str | None = None, short: bool = False):
         item.update({"description": "A long description for an item from the list."})
 
     return item
+
+
+@app.post("/items")
+async def create_item(item: Item):
+    item_dict = item.model_dump()
+    if item.tax is not None:
+        price_with_tax = item.price + item.tax
+        item_dict.update({"price_with_tax": price_with_tax})
+    return item_dict
