@@ -59,7 +59,12 @@ async def read_file(file_path: str):
 async def read_items(
     skip: int = 0,
     limit: int = 10,
-    q: Annotated[str | None, Query(max_length=50)] = None,
+    q: Annotated[
+        str | None, Query(min_length=3, max_length=50, pattern="^fixedquery$")
+        # can use other defaults;
+        # skipping the default here make the parameter required;
+        # parameter can be of type None and still be required
+    ] = None,
 ):
     if q:
         fake_items_db.update({"q": q})
