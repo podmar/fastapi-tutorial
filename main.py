@@ -1,6 +1,8 @@
 from enum import Enum
 
-from fastapi import FastAPI
+from typing import Annotated
+
+from fastapi import FastAPI, Query
 from pydantic import BaseModel
 
 
@@ -54,7 +56,13 @@ async def read_file(file_path: str):
 
 
 @app.get("/items")
-async def read_items(skip: int = 0, limit: int = 10):
+async def read_items(
+    skip: int = 0,
+    limit: int = 10,
+    q: Annotated[str | None, Query(max_length=50)] = None,
+):
+    if q:
+        fake_items_db.update({"q": q})
     return fake_items_db[skip : skip + limit]
 
 
