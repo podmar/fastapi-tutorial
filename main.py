@@ -61,10 +61,10 @@ async def read_items(
     limit: int = 10,
     q: Annotated[
         str | None, Query(min_length=3, max_length=50, pattern="^fixedquery$")
-        # can use other defaults;
-        # skipping the default here make the parameter required;
-        # parameter can be of type None and still be required
     ] = None,
+    # can use other defaults;
+    # skipping the default here make the parameter required;
+    # parameter can be of type None and still be required
 ):
     if q:
         fake_items_db.update({"q": q})
@@ -97,3 +97,10 @@ async def update_item(item_id: int, item: Item, q: str | None = None):
     if q:
         result.update({"q": q})
     return result
+
+
+# defining a parameter with multiple values
+@app.get("/examples")
+async def read_examples(q: Annotated[list[str] | None, Query()] = None):
+    query_examples = {"q": q}
+    return query_examples
