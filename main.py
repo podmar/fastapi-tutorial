@@ -102,6 +102,6 @@ async def update_item(item_id: int, item: Item, q: str | None = None):
 
 # defining a parameter with multiple values
 @app.get("/examples")
-async def read_examples(q: Annotated[list[str] | None, Query()] = None):
+async def read_examples(q: Annotated[list[str] | None, Query(deprecated=True)] = None):
     query_examples = {"q": q}
     return query_examples
