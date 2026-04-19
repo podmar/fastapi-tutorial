@@ -60,7 +60,8 @@ async def read_items(
     skip: int = 0,
     limit: int = 10,
     q: Annotated[
-        str | None, Query(min_length=3, max_length=50, pattern="^fixedquery$")
+        str | None,
+        Query(min_length=3, max_length=50, pattern="^fixedquery$", alias="item-query"),
     ] = None,
     # can use other defaults;
     # skipping the default here make the parameter required;
