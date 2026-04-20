@@ -82,12 +82,20 @@ async def read_items(
 #
 #    return item
 
-# ---- Path parameters and numeric validations ---------------------------------------
+# ---- Path parameters and numeric validations -----
 
 
 @app.get("/items/{item_id}")
-async def read_item(item_id: Annotated[int, Path(title="The id of an item to get")]):
-    return {"item_id": item_id}
+async def read_item(
+    # declare parameters as kwargs to have your prefered order
+    *,
+    item_id: int = Path(title="The id of an item to get"),
+    q: str,
+):
+    results = {"item_id": item_id}
+    if q:
+        results.q = q
+    return results
 
 
 @app.post("/items")
